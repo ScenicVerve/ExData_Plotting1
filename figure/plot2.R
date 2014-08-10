@@ -13,6 +13,7 @@ The goal is to describe how household energy use varies over a 2-day period in F
 #Reference : The following descriptions of the 9 variables in the dataset are taken from the UCI web site:
 #https://archive.ics.uci.edu/ml/datasets/Individual+household+electric+power+consumption
 #On 8/8/14
+
 #Date: Date in format dd/mm/yyyy
 #Time: time in format hh:mm:ss
 #Global_active_power: household global minute-averaged active power (in kilowatt)
@@ -36,11 +37,14 @@ household_data <- read.table("household_power_consumption.txt", header = TRUE, s
                                                               "numeric","numeric" ,"numeric", "numeric", "numeric", "numeric"))
 
 household_data_sub <- subset(household_data, Date == "1/2/2007" | Date == "2/2/2007")
-attach(household_data_sub)
+attach(household_data_sub) 
 summary(Global_active_power)
 
-#plot1.png 
-hist(Global_active_power, col = "red", breaks = 12,
-     main = paste("Global Active Power"),  
-     xlab = "Global Active Power (kilowatts)")
+
+#plot2.png
+Date_Time <- paste(Date, Time)
+Date_Time <- strptime(Date_Time, "%d/%m/%Y %H:%M:%S")
+
+plot(x = Date_Time, y = Global_active_power, type = "l", 
+     ylab = "Global Active Power (kilowatts)")
 

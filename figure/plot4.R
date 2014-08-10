@@ -13,6 +13,7 @@ The goal is to describe how household energy use varies over a 2-day period in F
 #Reference : The following descriptions of the 9 variables in the dataset are taken from the UCI web site:
 #https://archive.ics.uci.edu/ml/datasets/Individual+household+electric+power+consumption
 #On 8/8/14
+
 #Date: Date in format dd/mm/yyyy
 #Time: time in format hh:mm:ss
 #Global_active_power: household global minute-averaged active power (in kilowatt)
@@ -37,10 +38,29 @@ household_data <- read.table("household_power_consumption.txt", header = TRUE, s
 
 household_data_sub <- subset(household_data, Date == "1/2/2007" | Date == "2/2/2007")
 attach(household_data_sub)
-summary(Global_active_power)
+Date_Time <- paste(Date, Time)
+Date_Time <- strptime(Date_Time, "%d/%m/%Y %H:%M:%S")
 
-#plot1.png 
-hist(Global_active_power, col = "red", breaks = 12,
-     main = paste("Global Active Power"),  
-     xlab = "Global Active Power (kilowatts)")
+#plot4.png
+## Split the device into four plotting regions
+par(mfcol = c(2, 2))
+
+#'Global Active Power' vs 'Time' Plot
+plot(x = Date_Time, y = Global_active_power, type = "l", 
+     ylab = "Global Active Power")
+
+# 'Energy sub metering' vs 'Time' Plot
+plot(x = Date_Time, y = Sub_metering_1,  type = "l", ylab = "Energy sub metering")
+lines(x = Date_Time, y = Sub_metering_2, col = "red")
+lines(x = Date_Time, y = Sub_metering_3, col = "blue")
+legend("topright", legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), bty = "n", 
+       lty = 1, col = c("black", "red", "blue"),  cex=.5)
+
+# 'Voltage' vs 'Time' Plot
+plot(x = Date_Time, y = Voltage, type = "l", xlab = "datetime", 
+     ylab = "Voltage")
+
+# 'Global_reactive_power' vs 'Time' Plot
+plot(x = Date_Time, y = Global_reactive_power, 
+     type = "l", xlab = "datetime", ylab = "Global Reactive Power")
 
